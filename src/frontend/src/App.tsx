@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
+import UpDown from "./components/upDown";
 
 interface Task {
     id: string;
@@ -70,46 +71,51 @@ function App() {
         setList(response);
     };
 
+    const mainRef = useRef<HTMLDivElement>(null);
+
     return (
-        <main className="h-screen w-screen bg-slate-100 grid grid-cols-4">
-            <section className="border-r bg-white ">
-                <h3 className="flex justify-center items-center w-full h-12 mb-1">Create</h3>
-                <form
-                    className="w-full h-full flex gap-4 flex-col"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        createHandler();
-                    }}
-                >
-                    <div className="h-10 w-full px-2">
-                        <input className="w-full border  h-full" onChange={(e) => setCreateValue(e.target.value)} value={createValue}></input>
-                    </div>
-                    <div className="h-10 w-full px-2">
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                createHandler();
-                            }}
-                            className="w-full h-full shadow-md border rounded-md"
-                        >
-                            Add
-                        </button>
-                    </div>
-                </form>
-            </section>
-            <section className="border-r bg-white  ">
-                <h3 className="flex justify-center items-center w-full h-12 mb-1">Read</h3>
-                <List list={list} enabled={true} update={() => null} type={"none"} />
-            </section>
-            <section className="border-r bg-white  ">
-                <h3 className="flex justify-center items-center w-full h-12 ">Update</h3>
-                <List list={list} update={Update} type={"Update"} />
-            </section>
-            <section className="border-r bg-white  ">
-                <h3 className="flex justify-center items-center w-full h-12 mb-1">Delete</h3>
-                <List list={list} update={Delete} type={"Delete"} />
-            </section>
-        </main>
+        <>
+            <main className="h-screen w-screen bg-slate-100 grid grid-rows-[repeat(4,100vh)] lg:grid-cols-4" ref={mainRef}>
+                <section className="border-r bg-white max-[1024px]:border-y ">
+                    <h3 className="flex justify-center items-center w-full h-12 mb-1">Create</h3>
+                    <form
+                        className="w-full h-full flex gap-4 flex-col"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            createHandler();
+                        }}
+                    >
+                        <div className="h-10 w-full px-2">
+                            <input className="w-full border  h-full" onChange={(e) => setCreateValue(e.target.value)} value={createValue}></input>
+                        </div>
+                        <div className="h-10 w-full px-2">
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    createHandler();
+                                }}
+                                className="w-full h-full shadow-md border rounded-md"
+                            >
+                                Add
+                            </button>
+                        </div>
+                    </form>
+                </section>
+                <section className="border-r bg-white max-[1024px]:border-y ">
+                    <h3 className="flex justify-center items-center w-full h-12 mb-1">Read</h3>
+                    <List list={list} enabled={true} update={() => null} type={"none"} />
+                </section>
+                <section className="border-r bg-white max-[1024px]:border-y ">
+                    <h3 className="flex justify-center items-center w-full h-12 ">Update</h3>
+                    <List list={list} update={Update} type={"Update"} />
+                </section>
+                <section className="border-r bg-white max-[1024px]:border-y ">
+                    <h3 className="flex justify-center items-center w-full h-12 mb-1">Delete</h3>
+                    <List list={list} update={Delete} type={"Delete"} />
+                </section>
+            </main>
+            <UpDown mainRef={mainRef} />
+        </>
     );
 }
 
