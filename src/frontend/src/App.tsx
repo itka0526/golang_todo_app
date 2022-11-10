@@ -99,33 +99,33 @@ function App() {
             </section>
             <section className="border-r bg-white  ">
                 <h3 className="flex justify-center items-center w-full h-12 mb-1">Read</h3>
-                <List list={list} enabled={true} update={() => null} />
+                <List list={list} enabled={true} update={() => null} type={"none"} />
             </section>
             <section className="border-r bg-white  ">
                 <h3 className="flex justify-center items-center w-full h-12 ">Update</h3>
-                <List list={list} update={Update} />
+                <List list={list} update={Update} type={"Update"} />
             </section>
             <section className="border-r bg-white  ">
                 <h3 className="flex justify-center items-center w-full h-12 mb-1">Delete</h3>
-                <List list={list} update={Delete} />
+                <List list={list} update={Delete} type={"Delete"} />
             </section>
         </main>
     );
 }
 
-const List = ({ list, enabled = false, update }: { list: Task[]; enabled?: boolean; update: Function }) => {
+const List = ({ list, enabled = false, update, type }: { list: Task[]; enabled?: boolean; update: Function; type: string }) => {
     return (
         <div className="h-full w-full px-2">
             <ul className="h-full w-full">
                 {list.map((task: Task) => (
-                    <ListItem key={task.id} task={task} enabled={enabled} update={update} />
+                    <ListItem key={task.id} task={task} enabled={enabled} update={update} type={type} />
                 ))}
             </ul>
         </div>
     );
 };
 
-const ListItem = ({ task, enabled, update }: { task: Task; enabled: boolean; update: Function }) => {
+const ListItem = ({ task, enabled, update, type }: { task: Task; enabled: boolean; update: Function; type: string }) => {
     const { id, status, taskName } = task;
     const [state, setState] = useState(false);
 
@@ -136,8 +136,8 @@ const ListItem = ({ task, enabled, update }: { task: Task; enabled: boolean; upd
     return (
         <li className={`w-full h-10 grid ${enabled ? "grid-cols-[90%,10%]" : "grid-cols-[60%,10%,30%]"} items-center`}>
             <span>{taskName}</span>
-            <input type={"checkbox"} disabled={update.name === "Delete" || enabled} checked={state} onChange={() => setState((prev) => !prev)} />
-            {!enabled && <button onClick={() => update({ id, status: state })}> {update.name} </button>}
+            <input type={"checkbox"} disabled={type === "Delete" || enabled} checked={state} onChange={() => setState((prev) => !prev)} />
+            {!enabled && <button onClick={() => update({ id, status: state })}> {type} </button>}
         </li>
     );
 };
