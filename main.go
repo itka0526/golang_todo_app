@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	var PORT string = os.Getenv("PORT")
+	var PORT string = ":"+ os.Getenv("PORT")
 
 	user, err := user.Current()
 	if err != nil {
